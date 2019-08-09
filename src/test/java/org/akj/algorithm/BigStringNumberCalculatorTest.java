@@ -4,8 +4,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
+import java.security.InvalidParameterException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class BigStringNumberCalculatorTest {
 
@@ -38,5 +40,39 @@ class BigStringNumberCalculatorTest {
         //System.out.println("expected: " + expected + ", actual: " + result);
         assertEquals(expected, new BigInteger(result));
 
+    }
+
+    @Test
+    public void testExceptionalCase(){
+        assertThrows(InvalidParameterException.class,()->{
+            calculator.add(null,null);
+        });
+
+        assertThrows(InvalidParameterException.class,()->{
+            calculator.add("123456",null);
+        });
+
+        assertThrows(InvalidParameterException.class,()->{
+            calculator.add("123456","werwerwewer");
+        });
+
+        assertThrows(InvalidParameterException.class,()->{
+            calculator.subtract("xxxx","123456");
+        });
+
+        assertThrows(InvalidParameterException.class,()->{
+            calculator.subtract("-123","123456");
+        });
+    }
+
+    @Test
+    public void testSubtractReturnZero(){
+        String arg1 = "789899092342343423423";
+        String arg2 = "789899092342343423423";
+        String result = calculator.subtract(arg1, arg2);
+
+        BigInteger expected = new BigInteger("0");
+        //System.out.println("expected: " + expected + ", actual: " + result);
+        assertEquals(expected, new BigInteger(result));
     }
 }
