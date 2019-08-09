@@ -19,9 +19,7 @@ public class BigStringNumberCalculator {
      */
     public String add(String arg1, String arg2) {
         //1.verify the input, if not valid throw exception
-        if (null == arg1 || null == arg2 || !arg1.matches(REGEX) || !arg2.matches(REGEX)) {
-            throw new InvalidParameterException();
-        }
+        validate(arg1, arg2);
 
         //2.extract each 'bit' for calculation, reverse to make sure the calculation starts from lower bits,
         // rather than from higher bits
@@ -65,6 +63,19 @@ public class BigStringNumberCalculator {
     }
 
     /**
+     * check the inputs
+     * @param arg1
+     * @param arg2
+     *
+     * @throws if inputs are not valid, raise exception
+     */
+    private void validate(String arg1, String arg2) {
+        if (null == arg1 || null == arg2 || !arg1.matches(REGEX) || !arg2.matches(REGEX)) {
+            throw new InvalidParameterException();
+        }
+    }
+
+    /**
      * Big string number subtract
      *
      * @param arg1
@@ -73,9 +84,7 @@ public class BigStringNumberCalculator {
      */
     public String subtract(String arg1, String arg2) {
         //1.verify the input, if not valid throw exception
-        if (null == arg1 || null == arg2 || !arg1.matches(REGEX) || !arg2.matches(REGEX)) {
-            throw new InvalidParameterException();
-        }
+        validate(arg1, arg2);
 
         //2. compare(arg1, arg2) to get the +/- sign for the final result
         int val = isGreaterThan(arg1, arg2);
@@ -91,10 +100,13 @@ public class BigStringNumberCalculator {
         String argTmp1 = arg1;
         String argTmp2 = arg2;
 
+        // adjust the args sequence to ensure that Subtraction args is larger than the subtracted args
         if (val > 0) {
+            // no need to adjust
             args1 = new StringBuffer(arg1).reverse().toString().toCharArray();
             args2 = new StringBuffer(arg2).reverse().toString().toCharArray();
         } else {
+            // reverse the args
             args1 = new StringBuffer(arg2).reverse().toString().toCharArray();
             args2 = new StringBuffer(arg1).reverse().toString().toCharArray();
 
